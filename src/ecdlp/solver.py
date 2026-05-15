@@ -12,6 +12,7 @@ from .utils import solve_linear_congruence
 
 @dataclass
 class RoAlgorithmSettings:
+    """Параметры для запуска алгоритма"""
 
     p_point: Point
     q_point: Point
@@ -24,8 +25,17 @@ class RoAlgorithmSettings:
 
 
 class RoAlgorithmECDLPSolver:
+    """Класс для решения ECDLP rho-алгоритмом"""
 
     def __init__(self, settings: RoAlgorithmSettings) -> None:
+        """Инициализируем алгоритм настройками
+
+        Args:
+            settings (RoAlgorithmSettings): Класс настроек для алгоритма
+
+        Raises:
+            ValueError: Если хоть одна точка не на кривой
+        """
 
         self.settings = settings
         self.p_point = settings.p_point
@@ -43,6 +53,11 @@ class RoAlgorithmECDLPSolver:
         )
 
     def solve_ecdlp(self) -> Optional[NumberModulo]:
+        """функция запуска циклов алгоритма
+
+        Returns:
+            Optional[NumberModulo]: Класс вычетов при успехе, None, если не хватило попыток
+        """
 
         start_x = self.settings.start_x
         start_y = self.settings.start_y
@@ -66,6 +81,18 @@ class RoAlgorithmECDLPSolver:
     def _try_solve(
         self, step_x: StepResult, step_y: StepResult
     ) -> Optional[NumberModulo]:
+        """Одна попытка решения алгоритма
+
+        Args:
+            step_x (StepResult): Начальная точка x (черепаха)
+            step_y (StepResult): Начальная точка y (заяц)
+
+        Raises:
+            RuntimeError: Если ни одно коллизионное сравнение не дало результата
+
+        Returns:
+            Optional[NumberModulo]: найденное решение в виде числа по модулю
+        """
 
         cycle_result = self._cycle(step_x, step_y)
         if cycle_result is None:
@@ -104,6 +131,15 @@ class RoAlgorithmECDLPSolver:
         raise RuntimeError("ECDLP has no solution")
 
     def _cycle(self, step_x: StepResult, step_y: StepResult) -> Optional[CycleResult]:
+        """Непосредственно процесс пересчета следующего щага
+
+        Args:
+            step_x (StepResult): Текцщее значение точки x
+            step_y (StepResult): Текущее значение точки y
+
+        Returns:
+            Optional[CycleResult]: Пара совпавших x,y, либо none, если не встретилось за отведенное число попыток
+        """
 
         self._print_step(0, step_x, step_y)
 
@@ -128,6 +164,13 @@ class RoAlgorithmECDLPSolver:
             i += 1
 
     def _print_step(self, i: int, step_x: StepResult, step_y: StepResult) -> None:
+        """Визуализация решения алгоритма
+
+        Args:
+            i (int): номер шага
+            step_x (StepResult): текущий х
+            step_y (StepResult): текцщий у
+        """
 
         if self.settings.should_print:
             print(

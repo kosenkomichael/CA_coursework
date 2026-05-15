@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Point:
+    """Точка на эллиптической кривой"""
 
     x: int | None = None
     y: int | None = None
@@ -12,10 +13,20 @@ class Point:
 
     @staticmethod
     def infinity() -> "Point":
+        """Генерирует точку на бесконечности = нейтральный элемент
+
+        Returns:
+            Point: точку
+        """
 
         return Point(is_infinity=True)
 
     def __str__(self) -> str:
+        """Функция для print точки
+
+        Returns:
+            str: строка вида (x,y)
+        """
 
         if self.is_infinity:
             return "(INF)"
@@ -24,6 +35,7 @@ class Point:
 
 @dataclass(frozen=True)
 class NumberModulo:
+    """Класс для записи "число по модулю" """
 
     number: int
     modulus: int
@@ -31,6 +43,7 @@ class NumberModulo:
 
 @dataclass(frozen=True)
 class StepResult:
+    """Класс для промежуточного результата одного шага rho-алгоритма"""
 
     point: Point
     a: int
@@ -39,6 +52,7 @@ class StepResult:
 
 @dataclass(frozen=True)
 class CycleResult:
+    """Результат при обнаружении коллизииы"""
 
     step_x: StepResult
     step_y: StepResult

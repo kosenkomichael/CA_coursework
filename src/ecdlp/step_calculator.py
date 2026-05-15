@@ -7,10 +7,19 @@ from .models import Point, StepResult
 
 
 class StepCalculator:
+    """Класс для пересчета последующего шага"""
 
     def __init__(
         self, p_point: Point, q_point: Point, n: int, curve: EllipticCurve
     ) -> None:
+        """Инициализация "шагателя"
+
+        Args:
+            p_point (Point): первая точка
+            q_point (Point): вторая точка
+            n (int): порядок элемента
+            curve (EllipticCurve): кривая, на которой работаем
+        """
 
         self.p_point = p_point
         self.q_point = q_point
@@ -22,6 +31,11 @@ class StepCalculator:
         self.second_right = 2 * third
 
     def generate_random_zero_step(self) -> StepResult:
+        """Если начальные точки не заданы - генерируем рандомные
+
+        Returns:
+            StepResult: 2 рандомные точки
+        """
 
         a = random.randrange(0, self.n)
         b = random.randrange(0, self.n)
@@ -32,6 +46,14 @@ class StepCalculator:
         return StepResult(x, a, b)
 
     def _range_of(self, point: Point) -> int:
+        """Определяем в какую треть попала точка на шаге
+
+        Args:
+            point (Point): точка
+
+        Returns:
+            int: треть
+        """
 
         if point.is_infinity:
             return 0
@@ -44,6 +66,14 @@ class StepCalculator:
         return 2
 
     def calculate(self, previous_step: StepResult) -> StepResult:
+        """Пересчет значений на след. шаге
+
+        Args:
+            previous_step (StepResult): значение предыдущего шага
+
+        Returns:
+            StepResult: значение следующего шага
+        """
 
         point = previous_step.point
         bucket = self._range_of(point)

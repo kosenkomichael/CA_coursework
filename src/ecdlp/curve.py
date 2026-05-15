@@ -7,8 +7,19 @@ from .models import Point
 
 
 class EllipticCurve:
+    """Эллиптическая кривая вида y^2 = x^3 + Ax + B (modp)"""
 
     def __init__(self, a: int, b: int, p: int) -> None:
+        """Инициализация эллиптической кривой
+
+        Args:
+            a (int): параметр A
+            b (int): параметр B
+            p (int): модуль, по которому работаем
+
+        Raises:
+            ValueError: Ошибка, если у эллиптической кривой есть сингулярные точки
+        """
 
         self.a = a
         self.b = b
@@ -19,6 +30,14 @@ class EllipticCurve:
             raise ValueError("Elliptic curve is singular")
 
     def is_point_on_curve(self, point: Point) -> bool:
+        """Функция проверки, принадлежит ли точка эллиптической кривой
+
+        Args:
+            point (Point): точка для проверки
+
+        Returns:
+            bool: Принадлежит кривой или нет
+        """
 
         if point.is_infinity:
             return True
@@ -29,6 +48,15 @@ class EllipticCurve:
         return left == right
 
     def add_points(self, p1: Point, p2: Point) -> Point:
+        """Функция сложения двух точек
+
+        Args:
+            p1 (Point): 1-я точка
+            p2 (Point): 3-я точка
+
+        Returns:
+            Point: Результат сложения
+        """
 
         if p1.is_infinity:
             return p2
@@ -57,6 +85,15 @@ class EllipticCurve:
         return Point(x3, y3)
 
     def multiply_point(self, point: Point, k: int) -> Point:
+        """Умножение точек, реализованное через бинарное разложение
+
+        Args:
+            point (Point): точка
+            k (int): множитель
+
+        Returns:
+            Point: Результат умножения
+        """
 
         if point.is_infinity or k == 0:
             return Point.infinity()
@@ -73,6 +110,14 @@ class EllipticCurve:
         return result
 
     def tonelli_shanks(self, n: int) -> int | None:
+        """Нахождение квадратного корня числа методом Tonnelli-Shanks
+
+        Args:
+            n (int): r^2 = n (mod p)
+
+        Returns:
+            int | None: Результат извлечения корня
+        """
 
         p = self.p
         n %= p
@@ -115,6 +160,11 @@ class EllipticCurve:
         return r
 
     def get_random_point(self) -> Point:
+        """Генерация рандомной точки
+
+        Returns:
+            Point: рандомно сгенерированная точка
+        """
 
         while True:
             x = random.randrange(0, self.p)
@@ -127,6 +177,18 @@ class EllipticCurve:
                 return point
 
     def find_point_order(self, point: Point) -> int:
+        """Вычисление порядка точки
+
+        Args:
+            point (Point): Точка, порядок которой ищем
+
+        Raises:
+            ValueError: Ошибка, если точка не на кривой
+            RuntimeError: Если верхнаяя оценка некорректно взята и не получилось найти порядок
+
+        Returns:
+            int: порядок точки
+        """
 
         if point.is_infinity:
             return 1
