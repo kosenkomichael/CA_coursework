@@ -30,11 +30,14 @@ pip install -e .[dev]
 
 ```bash
 ecdlp
-tests
 ```
 
 ## Запуск Tests
 
 ```bash
 python -c "from ecdlp.test_runner import run_test_file; run_test_file()"
+```
+alternative:
+```bash
+tests
 ```
