@@ -12,7 +12,13 @@
 - генерация и прогон тестовых наборов;
 - опциональная сверка через SageMath.
 
-## Установка
+## Установка sage-core jupyter notebook
+
+```bash
+docker run -p 8888:8888 sagemath/sagemath:10.5 sage-jupyter --JupyterApp.token='' --JupyterApp.password=''
+```
+
+## Запуск приложения
 
 ```bash
 python -m venv .venv
