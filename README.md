@@ -1,4 +1,4 @@
-# ecdlp-python
+# ECDLP-python
 
 Реализация решения задачи ECDLP на эллиптических кривых над конечным полем
 с использованием rho-алгоритма Полларда.
@@ -11,6 +11,9 @@
 - решение ECDLP через Pollard rho;
 - генерация и прогон тестовых наборов;
 - опциональная сверка через SageMath.
+
+<details>
+<summary>Установка и запуск</summary>
 
 ## Установка sage-core jupyter notebook
 
@@ -41,6 +44,7 @@ alternative:
 ```bash
 tests
 ```
+</details>
 
 ## Структура проекта
 
